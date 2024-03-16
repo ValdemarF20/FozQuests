@@ -7,17 +7,21 @@ import cc.valdemar.foz.fozquests.quests.ActiveQuest;
 import cc.valdemar.foz.fozquests.quests.impl.BreakQuest;
 import cc.valdemar.foz.fozquests.quests.impl.ExploreQuest;
 import cc.valdemar.foz.fozquests.quests.impl.KillQuest;
+import cc.valdemar.foz.fozquests.quests.impl.PickupQuest;
 import cc.valdemar.foz.fozquests.utils.ChatUtil;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 
 @RequiredArgsConstructor
 public class ProgressListener implements Listener { //TODO collecting items
@@ -75,6 +79,26 @@ public class ProgressListener implements Listener { //TODO collecting items
         // Block type must match quest block type
         Material block = breakQuest.getBlock();
         if(!block.isBlock() || block != event.getBlock().getType()) return;
+
+        progress(qPlayer, player, activeQuest);
+    }
+
+    @EventHandler
+    public void onPickup(PlayerAttemptPickupItemEvent event) {
+        if(event.isCancelled()) return;
+
+        Player player = event.getPlayer();
+        QPlayer qPlayer = playerManager.getQPlayer(player.getUniqueId());
+        if(qPlayer == null) return;
+
+        ActiveQuest activeQuest = qPlayer.getActiveQuest();
+        if(activeQuest == null || !(activeQuest.getQuest() instanceof PickupQuest pickupQuest)) {
+            return;
+        }
+
+        // Picked up item must match active quest pickup item
+        ItemStack item = event.getItem().getItemStack();
+        if(pickupQuest.getPickup() != item.getType()) return;
 
         progress(qPlayer, player, activeQuest);
     }

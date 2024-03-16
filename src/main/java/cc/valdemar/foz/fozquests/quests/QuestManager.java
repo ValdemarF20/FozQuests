@@ -5,6 +5,7 @@ import cc.valdemar.foz.fozquests.players.QPlayer;
 import cc.valdemar.foz.fozquests.quests.impl.BreakQuest;
 import cc.valdemar.foz.fozquests.quests.impl.ExploreQuest;
 import cc.valdemar.foz.fozquests.quests.impl.KillQuest;
+import cc.valdemar.foz.fozquests.quests.impl.PickupQuest;
 import cc.valdemar.foz.fozquests.utils.MapUtil;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -55,6 +56,9 @@ public class QuestManager {
                 }
 
                 newQuest = new ExploreQuest(identifier, icon, reward, amount, questType, location, custom);
+            }
+            case PICKUP -> {
+                newQuest = new PickupQuest(identifier, icon, reward, amount, questType, Material.valueOf(args.toUpperCase()), custom);
             }
             default -> {
                 throw new RuntimeException("No quest type found for quest with identifier: " + identifier);
