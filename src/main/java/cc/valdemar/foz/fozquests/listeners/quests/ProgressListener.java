@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 @RequiredArgsConstructor
-public class ProgressListener implements Listener { //TODO collecting items
+public class ProgressListener implements Listener {
     private final PlayerManager playerManager;
 
     @EventHandler

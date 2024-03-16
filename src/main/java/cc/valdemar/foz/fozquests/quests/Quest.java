@@ -33,7 +33,7 @@ public class Quest {
         return identifier;
     }
 
-    public void giveRewards(Player player) { //TODO Test if item is stacked
+    public void giveRewards(Player player) {
         ItemStack rewardItem = reward.getItemStack().clone();
         ItemStack newRewardItem = new ItemStack(rewardItem.getType());
         newRewardItem.setAmount(rewardItem.getAmount());
